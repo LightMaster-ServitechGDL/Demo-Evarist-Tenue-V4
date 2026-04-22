@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evarist Tenue — Minimalista</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;--white:#ffffff;--gray:#f7f7f7;--mid:#e0e0e0;
+  --accent:#b07b5c;--accent2:#c8a882;
+  --muted:#888;--ff:'Playfair Display',Georgia,serif;--fb:'Jost',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--white);color:var(--black);font-size:15px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem;height:60px;border-bottom:1px solid var(--mid);
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(8px)}
+.nav-logo{font-family:var(--ff);font-size:1.4rem;font-weight:400;
+  letter-spacing:0.18em;text-decoration:none;color:var(--black)}
+.nav-logo span{font-style:italic;color:var(--accent)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:0.72rem;
+  letter-spacing:0.15em;text-transform:uppercase;transition:color 0.2s}
+.nav-links a:hover{color:var(--black)}
+.cart-btn{background:var(--black);color:var(--white);border:none;
+  padding:0.45rem 1.2rem;font-family:var(--fb);font-size:0.72rem;
+  letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;
+  transition:background 0.2s;position:relative}
+.cart-btn:hover{background:var(--accent)}
+.cart-count{position:absolute;top:-6px;right:-6px;background:var(--accent);
+  color:var(--white);border-radius:50%;width:18px;height:18px;font-size:0.65rem;
+  display:none;align-items:center;justify-content:center}
+
+/* HERO — full bleed split */
+.hero{display:grid;grid-template-columns:55% 45%;padding-top:60px}
+@media(max-width:768px){.hero{grid-template-columns:1fr}}
+.hero-left{padding:5rem 4rem 5rem 5rem;display:flex;flex-direction:column;
+  justify-content:center;border-right:1px solid var(--mid)}
+.hero-tag{font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:2rem;display:flex;align-items:center;gap:0.8rem}
+.hero-tag::before{content:'';display:block;width:40px;height:1px;background:var(--accent)}
+.hero-title{font-family:var(--ff);font-size:clamp(3rem,6vw,5.5rem);
+  font-weight:400;line-height:1;margin-bottom:1.5rem;color:var(--black)}
+.hero-title em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:0.9rem;color:var(--muted);max-width:380px;
+  line-height:1.8;margin-bottom:3rem;font-weight:300}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-main{background:var(--black);color:var(--white);padding:0.9rem 2.5rem;
+  font-family:var(--fb);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;
+  border:none;cursor:pointer;text-decoration:none;transition:background 0.2s}
+.btn-main:hover{background:var(--accent)}
+.btn-ghost{background:transparent;color:var(--black);padding:0.9rem 2.5rem;
+  border:1px solid var(--mid);font-family:var(--fb);font-size:0.75rem;
+  letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;
+  transition:all 0.2s}
+.btn-ghost:hover{border-color:var(--black)}
+.hero-right{position:relative;overflow:hidden;min-height:380px}
+@media(max-width:768px){.hero-right{height:55vw;min-height:unset}}
+.hero-right img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.hero-right-tag{position:absolute;bottom:2rem;left:2rem;
+  background:rgba(255,255,255,0.9);padding:0.6rem 1.2rem;
+  font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--black)}
+
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(10,8,6,0.9);z-index:300;
+  display:none;align-items:center;justify-content:center;padding:2rem}
+.lightbox.open{display:flex}
+.lb-inner{position:relative;max-width:460px;width:100%;
+  background:var(--white);animation:lbIn 0.25s ease}
+@keyframes lbIn{from{transform:scale(0.93);opacity:0}to{transform:scale(1);opacity:1}}
+.lb-img{width:100%;max-height:58vh;object-fit:cover;display:block}
+.lb-body{padding:1.4rem}
+.lb-cat{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem}
+.lb-name{font-family:var(--ff);font-size:1.4rem;margin-bottom:0.3rem}
+.lb-desc{font-size:0.8rem;color:var(--muted);margin-bottom:1rem;font-weight:300}
+.lb-sizes{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:1rem}
+.lb-close{position:absolute;top:0.7rem;right:0.7rem;background:rgba(0,0,0,0.45);
+  color:#fff;border:none;width:30px;height:30px;font-size:0.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.lb-close:hover{background:rgba(0,0,0,0.75)}
+.lb-add{width:100%;padding:0.75rem;background:var(--black);color:var(--white);
+  border:none;font-family:var(--fb);font-size:0.8rem;letter-spacing:0.08em;
+  text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.lb-add:hover{background:var(--accent)}
+/* TESTIMONIALS */
+.testi-section{padding:5rem;background:var(--gray)}
+.testi-head{margin-bottom:3rem}
+.testi-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
+.testi-h2{font-family:var(--ff);font-size:2rem;font-weight:400}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--mid)}
+.testi-card{background:var(--white);padding:2rem}
+.testi-stars{color:var(--accent);font-size:0.8rem;margin-bottom:0.8rem}
+.testi-text{font-size:0.88rem;color:var(--muted);line-height:1.7;font-style:italic;margin-bottom:1rem;font-weight:300}
+.testi-author{font-size:0.78rem;font-weight:500;color:var(--black)}
+/* MAP */
+.map-section{padding:5rem;background:var(--white)}
+@media(max-width:640px){.testi-section,.map-section{padding:3rem 1.5rem}}
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;max-width:960px;margin:2rem auto 0}
+@media(max-width:640px){.map-grid{grid-template-columns:1fr}}
+.map-frame{overflow:hidden}
+.map-frame iframe{width:100%;height:300px;border:none;display:block}
+.map-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
+.map-h3{font-family:var(--ff);font-size:1.8rem;font-weight:400;margin-bottom:1rem}
+.map-p{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;font-weight:300}
+.zone-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.5rem}
+.zone-list li{font-size:0.82rem;color:var(--black);display:flex;align-items:center;gap:0.5rem}
+.zone-list li::before{content:'📍';font-size:0.72rem}
+/* MARQUEE STRIP */
+.marquee-strip{background:var(--black);color:var(--white);
+  padding:0.9rem 0;overflow:hidden;white-space:nowrap}
+.marquee-inner{display:inline-block;animation:marquee 20s linear infinite}
+.marquee-inner span{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+  margin:0 2rem;opacity:0.7}
+.marquee-inner span.dot{opacity:0.3;margin:0 0.5rem}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* HOW SECTION */
+.how-section{padding:7rem 5rem;border-bottom:1px solid var(--mid)}
+.section-header{display:flex;align-items:baseline;gap:2rem;margin-bottom:5rem}
+.section-num{font-family:var(--ff);font-size:5rem;font-weight:400;
+  color:var(--mid);font-style:italic;line-height:1}
+.section-title{font-family:var(--ff);font-size:clamp(1.8rem,3vw,2.5rem);
+  font-weight:400;color:var(--black)}
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+@media(max-width:640px){.steps-row{grid-template-columns:repeat(2,1fr)}}
+.step-item{padding:2rem;border-left:1px solid var(--mid);position:relative}
+.step-item:first-child{border-left:none}
+.step-n{font-family:var(--ff);font-size:2.5rem;font-style:italic;
+  color:var(--mid);margin-bottom:1.2rem}
+.step-icon-big{font-size:1.8rem;margin-bottom:0.8rem;display:block}
+.step-item h3{font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:0.6rem;font-weight:500}
+.step-item p{font-size:0.82rem;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* BANNER */
+.banner{position:relative;height:50vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center}
+.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.banner-overlay{position:absolute;inset:0;background:rgba(10,10,10,0.6)}
+.banner-text{position:relative;z-index:2;text-align:center;color:var(--white);padding:2rem}
+.banner-text h2{font-family:var(--ff);font-size:clamp(2rem,5vw,4rem);
+  font-weight:400;line-height:1.1;margin-bottom:1rem}
+.banner-text h2 em{font-style:italic;color:var(--accent2)}
+.banner-text p{font-size:0.9rem;opacity:0.75;max-width:420px;margin:0 auto 2rem;font-weight:300}
+
+/* SIZE SECTION */
+.size-section{display:grid;grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--mid);border-bottom:1px solid var(--mid)}
+@media(max-width:700px){.size-section{grid-template-columns:1fr}}
+.size-left{padding:5rem;border-right:1px solid var(--mid)}
+.size-right{padding:5rem;background:var(--gray)}
+.size-label{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1rem}
+.size-heading{font-family:var(--ff);font-size:2rem;font-weight:400;
+  margin-bottom:2rem;line-height:1.2}
+table{width:100%;border-collapse:collapse;font-size:0.82rem}
+th{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.6rem 0;border-bottom:2px solid var(--black);font-weight:500;text-align:left}
+td{padding:0.6rem 0;border-bottom:1px solid var(--mid);color:var(--muted)}
+td:first-child{color:var(--black);font-weight:500}
+tr:hover td{color:var(--black)}
+.finder-head{font-family:var(--ff);font-size:1.6rem;font-weight:400;
+  margin-bottom:0.5rem}
+.finder-sub{font-size:0.82rem;color:var(--muted);margin-bottom:2rem;font-weight:300}
+.finder-inputs{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.finder-inputs input{width:110px;padding:0.7rem 0.8rem;
+  border:1px solid var(--mid);background:var(--white);
+  font-size:0.88rem;outline:none;transition:border-color 0.2s;font-family:var(--fb)}
+.finder-inputs input:focus{border-color:var(--black)}
+.calc-btn{background:var(--black);color:var(--white);border:none;
+  padding:0.7rem 1.5rem;font-family:var(--fb);font-size:0.78rem;
+  letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.calc-btn:hover{background:var(--accent)}
+.size-result{display:none;margin-top:1rem;padding:1rem;
+  background:var(--white);border-left:3px solid var(--accent)}
+.size-result strong{font-family:var(--ff);font-size:1.8rem;color:var(--accent)}
+.wa-sz{display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.8rem;
+  background:#25D366;color:#fff;padding:0.5rem 1rem;font-size:0.78rem;
+  letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;transition:background 0.2s}
+.wa-sz:hover{background:#1da851}
+
+/* CATALOG */
+.catalog-section{padding:5rem}
+@media(max-width:700px){.catalog-section{padding:3rem 1.5rem}}
+.catalog-header{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+.catalog-heading{font-family:var(--ff);font-size:2rem;font-weight:400}
+.filter-row{display:flex;gap:0.4rem;flex-wrap:wrap}
+.fbtn{padding:0.35rem 1rem;border:1px solid var(--mid);background:transparent;
+  font-family:var(--fb);font-size:0.72rem;letter-spacing:0.08em;
+  text-transform:uppercase;cursor:pointer;color:var(--muted);transition:all 0.2s}
+.fbtn.active,.fbtn:hover{background:var(--black);border-color:var(--black);color:var(--white)}
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;
+  background:var(--mid)}
+.dress-card{background:var(--white);position:relative;overflow:hidden;
+  transition:transform 0.3s}
+.dress-card:hover{transform:scale(1.01);z-index:2}
+.dress-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--gray)}
+.dress-img-placeholder{width:100%;aspect-ratio:3/4;background:var(--gray);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--ff);font-size:5rem;color:var(--mid)}
+.dress-info{padding:1.2rem}
+.dress-cat{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:0.3rem}
+.dress-name{font-family:var(--ff);font-size:1.1rem;margin-bottom:0.3rem}
+.dress-desc{font-size:0.78rem;color:var(--muted);margin-bottom:1rem;font-weight:300}
+.size-chips{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:1rem}
+.sz{padding:0.2rem 0.5rem;border:1px solid var(--mid);font-size:0.72rem;
+  cursor:pointer;transition:all 0.15s;color:var(--muted)}
+.sz:hover{border-color:var(--black);color:var(--black)}
+.sz.selected{background:var(--black);border-color:var(--black);color:var(--white)}
+.add-btn{width:100%;padding:0.65rem;border:1px solid var(--mid);background:transparent;
+  font-family:var(--fb);font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;
+  cursor:pointer;color:var(--muted);transition:all 0.2s}
+.add-btn:hover{border-color:var(--black);color:var(--black)}
+.add-btn.added{background:var(--black);border-color:var(--black);color:var(--white)}
+.badge-new{position:absolute;top:0.8rem;left:0.8rem;background:var(--accent);
+  color:var(--white);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.2rem 0.5rem}
+
+/* FOOTER */
+footer{background:var(--black);color:rgba(255,255,255,0.6);
+  padding:4rem 5rem;display:grid;grid-template-columns:1fr 1fr;
+  gap:3rem;align-items:center}
+@media(max-width:600px){footer{grid-template-columns:1fr;padding:3rem 2rem}}
+.f-logo{font-family:var(--ff);font-size:2.2rem;font-weight:400;
+  color:var(--white);letter-spacing:0.1em;margin-bottom:0.5rem}
+.f-logo span{font-style:italic;color:var(--accent2)}
+.f-copy{font-size:0.78rem;line-height:1.7;font-weight:300}
+.f-copy a{color:var(--accent2);text-decoration:none}
+.f-links{display:flex;flex-direction:column;gap:1rem;align-items:flex-end}
+@media(max-width:600px){.f-links{align-items:flex-start}}
+.f-wa{display:inline-flex;align-items:center;gap:0.6rem;background:#25D366;
+  color:#fff;padding:0.8rem 1.5rem;font-size:0.78rem;letter-spacing:0.08em;
+  text-transform:uppercase;text-decoration:none;transition:background 0.2s}
+.f-wa:hover{background:#1da851}
+.f-ig{display:inline-flex;align-items:center;gap:0.6rem;
+  color:rgba(255,255,255,0.5);font-size:0.78rem;letter-spacing:0.08em;
+  text-transform:uppercase;text-decoration:none;transition:color 0.2s}
+.f-ig:hover{color:var(--white)}
+
+/* CART */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  z-index:200;display:none;align-items:flex-start;justify-content:flex-end}
+.cart-overlay.open{display:flex}
+.cart-panel{background:var(--white);width:380px;max-width:95vw;
+  height:100vh;overflow-y:auto;padding:2rem 1.5rem;
+  display:flex;flex-direction:column}
+.cart-header{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--mid)}
+.cart-title{font-family:var(--ff);font-size:1.5rem;font-weight:400}
+.close-btn{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--muted)}
+.cart-empty{text-align:center;color:var(--muted);font-size:0.85rem;margin-top:3rem;font-weight:300}
+.cart-items{flex:1;display:flex;flex-direction:column;gap:1rem}
+.cart-item{display:flex;gap:1rem;align-items:flex-start;
+  padding-bottom:1rem;border-bottom:1px solid var(--mid)}
+.cart-item-thumb{width:60px;height:80px;object-fit:cover;background:var(--gray);flex-shrink:0}
+.cart-item-info{flex:1}
+.cart-item-name{font-family:var(--ff);font-size:1rem}
+.cart-item-size{font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
+.cart-remove{background:none;border:none;cursor:pointer;color:var(--muted);
+  font-size:1rem;transition:color 0.2s;padding:0}
+.cart-remove:hover{color:var(--black)}
+.cart-footer{margin-top:1.5rem;display:flex;flex-direction:column;gap:0.8rem}
+.cart-note{background:var(--gray);padding:0.8rem 1rem;
+  font-size:0.8rem;color:var(--muted);line-height:1.5;font-weight:300}
+.cart-input{padding:0.65rem 0.8rem;border:1px solid var(--mid);
+  font-size:0.85rem;width:100%;outline:none;font-family:var(--fb)}
+.cart-input:focus{border-color:var(--black)}
+.cart-wa{display:flex;align-items:center;justify-content:center;gap:0.6rem;
+  background:#25D366;color:#fff;padding:1rem;font-family:var(--fb);
+  font-size:0.82rem;letter-spacing:0.06em;text-transform:uppercase;
+  border:none;cursor:pointer;transition:background 0.2s}
+.cart-wa:hover{background:#1da851}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:2rem;right:2rem;z-index:150;
+  background:#25D366;color:#fff;width:54px;height:54px;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;transition:transform 0.2s}
+.wa-float:hover{transform:scale(1.08)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Evarist <span>Tenue</span></a>
+  <ul class="nav-links">
+    <li><a href="#como">Proceso</a></li>
+    <li><a href="#tallas">Tallas</a></li>
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <button class="cart-btn" id="openCart">
+    Selección
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Renta de vestidos · A domicilio</p>
+    <h1 class="hero-title">El vestido<br>que buscas,<br><em>en tu puerta.</em></h1>
+    <p class="hero-sub">Sin tienda física, sin complicaciones. Selecciona tu vestido ideal, te llevamos las opciones a domicilio para que pruebes y elijas con calma.</p>
+    <div class="hero-actions">
+      <a href="#catalogo" class="btn-main">Ver catálogo</a>
+      <a href="#tallas" class="btn-ghost">Mi talla</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=900&q=85" alt="Vestido de gala">
+    <span class="hero-right-tag">Nueva colección 2025</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Renta de Vestidos</span><span class="dot">·</span>
+    <span>A Domicilio</span><span class="dot">·</span>
+    <span>Guadalajara</span><span class="dot">·</span>
+    <span>Fiesta</span><span class="dot">·</span>
+    <span>Formal</span><span class="dot">·</span>
+    <span>Boda</span><span class="dot">·</span>
+    <span>XV Años</span><span class="dot">·</span>
+    <span>Cóctel</span><span class="dot">·</span>
+    <span>Renta de Vestidos</span><span class="dot">·</span>
+    <span>A Domicilio</span><span class="dot">·</span>
+    <span>Guadalajara</span><span class="dot">·</span>
+    <span>Fiesta</span><span class="dot">·</span>
+    <span>Formal</span><span class="dot">·</span>
+    <span>Boda</span><span class="dot">·</span>
+    <span>XV Años</span><span class="dot">·</span>
+    <span>Cóctel</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- HOW -->
+<section class="how-section" id="como">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Así de sencillo</h2>
+  </div>
+  <div class="steps-row">
+    <div class="step-item">
+      <p class="step-n">01</p>
+      <span class="step-icon-big">👗</span>
+      <h3>Explora el catálogo</h3>
+      <p>Navega los estilos y selecciona los que más te gusten.</p>
+    </div>
+    <div class="step-item">
+      <p class="step-n">02</p>
+      <span class="step-icon-big">📏</span>
+      <h3>Indica tu talla</h3>
+      <p>Usa el localizador para elegir el ajuste correcto.</p>
+    </div>
+    <div class="step-item">
+      <p class="step-n">03</p>
+      <span class="step-icon-big">💬</span>
+      <h3>Envía tu selección</h3>
+      <p>Manda tus favoritos por WhatsApp y agendamos.</p>
+    </div>
+    <div class="step-item">
+      <p class="step-n">04</p>
+      <span class="step-icon-big">✨</span>
+      <h3>Prueba y elige</h3>
+      <p>Te llevamos todo a tu domicilio. Pruebas, eliges, listo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER -->
+<div class="banner">
+  <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1400&q=80" alt="Moda">
+  <div class="banner-overlay"></div>
+  <div class="banner-text">
+    <h2>Sin tienda física,<br><em>sin complicaciones</em></h2>
+    <p>La experiencia de boutique en la comodidad de tu hogar.</p>
+    <a href="#catalogo" class="btn-main" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff">Comenzar</a>
+  </div>
+</div>
+
+<!-- SIZE -->
+<section class="size-section" id="tallas">
+  <div class="size-left">
+    <p class="size-label">Guía de tallas</p>
+    <h2 class="size-heading">Encuentra tu<br>talla ideal</h2>
+    <table>
+      <thead><tr><th>Talla</th><th>Busto</th><th>Cintura</th><th>Cadera</th></tr></thead>
+      <tbody>
+        <tr><td>XS</td><td>80–84</td><td>60–64</td><td>86–90</td></tr>
+        <tr><td>S</td><td>84–88</td><td>64–68</td><td>90–94</td></tr>
+        <tr><td>M</td><td>88–92</td><td>68–72</td><td>94–98</td></tr>
+        <tr><td>L</td><td>92–96</td><td>72–76</td><td>98–102</td></tr>
+        <tr><td>XL</td><td>96–100</td><td>76–80</td><td>102–106</td></tr>
+        <tr><td>XXL</td><td>100–104</td><td>80–84</td><td>106–110</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="size-right">
+    <h3 class="finder-head">¿No sabes tu talla?</h3>
+    <p class="finder-sub">Ingresa tus medidas y te decimos qué talla elegir.</p>
+    <div class="finder-inputs">
+      <div>
+        <div style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Busto (cm)</div>
+        <input type="number" id="busto" placeholder="ej. 89">
+      </div>
+      <div>
+        <div style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Cintura (cm)</div>
+        <input type="number" id="cintura" placeholder="ej. 70">
+      </div>
+    </div>
+    <button class="calc-btn" onclick="findSize()">Calcular talla</button>
+    <div class="size-result" id="sizeResult"></div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="catalog-section" id="catalogo">
+  <div class="catalog-header">
+    <h2 class="catalog-heading">Catálogo de Vestidos</h2>
+    <div class="filter-row">
+      <button class="fbtn active" data-cat="todos">Todos</button>
+      <button class="fbtn" data-cat="fiesta">Fiesta</button>
+      <button class="fbtn" data-cat="formal">Formal</button>
+      <button class="fbtn" data-cat="boda">Boda / XV</button>
+      <button class="fbtn" data-cat="coctel">Cóctel</button>
+    </div>
+  </div>
+  <div class="catalog-grid" id="catalogGrid"></div>
+</section>
+
+<!-- FOOTER -->
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="testi-head">
+    <p class="testi-label">Lo que dicen</p>
+    <h2 class="testi-h2">Clientas felices</h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">Me trajeron 4 opciones a mi casa, probé todas con calma y elegí la que más me gustó. Nunca había rentado tan fácil.</p>
+      <p class="testi-author">— Sofía R., XV años</p>
+    </div>
+    <div class="testi-card">
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">El vestido llegó en perfectas condiciones y el servicio fue muy amable. Lo recomiendo totalmente para eventos formales.</p>
+      <p class="testi-author">— Mariana T., boda</p>
+    </div>
+    <div class="testi-card">
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">Seleccioné mis favoritos desde el celular y al día siguiente ya tenía las opciones en mi casa. Súper práctico.</p>
+      <p class="testi-author">— Valeria G., fiesta</p>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-section" id="cobertura">
+  <div class="map-grid">
+    <div class="map-frame">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d119744.37432655882!2d-103.4505!3d20.6736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428b18cb52fd39b%3A0xd63d9302bf865750!2sGuadalajara%2C%20Jal.!5e0!3m2!1ses!2smx!4v1680000000000"
+        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div>
+      <p class="map-label">Zona de servicio</p>
+      <h3 class="map-h3">Llevamos los vestidos hasta ti</h3>
+      <p class="map-p">Cubrimos Guadalajara y zona metropolitana. Si tienes duda si llegamos a tu colonia, escríbenos y lo confirmamos.</p>
+      <ul class="zone-list">
+        <li>Guadalajara Centro</li>
+        <li>Zapopan</li>
+        <li>Tlaquepaque</li>
+        <li>Tonalá</li>
+        <li>Tlajomulco</li>
+        <li>El Salto</li>
+      </ul>
+      <a href="https://wa.me/523318742975?text=Hola%20Evarist!%20Quisiera%20saber%20si%20tienen%20cobertura%20en%20mi%20colonia." target="_blank" class="btn-main">Verificar mi colonia</a>
+    </div>
+  </div>
+</section>
+
+<footer id="contacto">
+  <div>
+    <div class="f-logo">Evarist <span>Tenue</span></div>
+    <p class="f-copy">Renta de vestidos a domicilio · Guadalajara, Jalisco<br>
+      <a href="https://instagram.com/evarist_tenue" target="_blank">@evarist_tenue</a>
+      &nbsp;·&nbsp; © 2025 Evarist Tenue</p>
+  </div>
+  <div class="f-links">
+    <a href="https://wa.me/523318742975?text=Hola%20Evarist!%20Me%20gustar%C3%ADa%20informaci%C3%B3n." target="_blank" class="f-wa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="https://instagram.com/evarist_tenue" target="_blank" class="f-ig">
+      ↗ Instagram
+    </a>
+  </div>
+</footer>
+
+<a href="https://wa.me/523318742975?text=Hola%20Evarist!" target="_blank" class="wa-float">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-inner">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-body">
+      <p class="lb-cat" id="lbCat"></p>
+      <h3 class="lb-name" id="lbName"></h3>
+      <p class="lb-desc" id="lbDesc"></p>
+      <div style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Tallas disponibles</div>
+      <div class="lb-sizes" id="lbSizes"></div>
+      <button class="lb-add" id="lbAddBtn" onclick="lbAdd()">+ Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2 class="cart-title">Mi Selección</h2>
+      <button class="close-btn" id="closeCart">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">Aún no has seleccionado ningún vestido.</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-note">📍 Te llevamos las opciones a tu domicilio para que pruebes. ¡Sin compromiso!</div>
+      <input class="cart-input" type="text" id="clientName" placeholder="Tu nombre">
+      <input class="cart-input" type="text" id="clientAddress" placeholder="Tu dirección / colonia">
+      <button class="cart-wa" onclick="sendToWhatsApp()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const dresses=[
+  {id:1,name:'Aurora Escarlata',category:'fiesta',img:'https://images.unsplash.com/photo-1623609163859-ca93c959b98a?w=600&q=80',sizes:['XS','S','M','L'],isNew:true,desc:'Rojo pasión con escote en V y cola lateral'},
+  {id:2,name:'Noche Parisina',category:'formal',img:'https://images.unsplash.com/photo-1550639525-c97d455acf70?w=600&q=80',sizes:['S','M','L','XL'],isNew:false,desc:'Negro midi con detalle de encaje en manga'},
+  {id:3,name:'Jardín de Seda',category:'boda',img:'https://images.unsplash.com/photo-1612336307429-8a898d10e223?w=600&q=80',sizes:['XS','S','M'],isNew:true,desc:'Verde salvia con bordado floral y espalda descubierta'},
+  {id:4,name:'Medianoche Azul',category:'coctel',img:'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&q=80',sizes:['S','M','L'],isNew:false,desc:'Azul medianoche con brillo sutil y corte asimétrico'},
+  {id:5,name:'Rosa Antiguo',category:'fiesta',img:'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80',sizes:['XS','S','M','L','XL'],isNew:false,desc:'Rosa pálido con tul y detalles en la cintura'},
+  {id:6,name:'Magnolia Blanca',category:'boda',img:'https://images.unsplash.com/photo-1521467752200-3bccf80f16ed?w=600&q=80',sizes:['S','M','L'],isNew:true,desc:'Blanco roto con escote corazón, ideal para XV años'},
+  {id:7,name:'Terciopelo Borgoña',category:'formal',img:'https://images.unsplash.com/photo-1596783074918-c84cb06531ca?w=600&q=80',sizes:['M','L','XL','XXL'],isNew:false,desc:'Corte sirena en terciopelo vino con manga larga'},
+  {id:8,name:'Noche Dorada',category:'coctel',img:'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&q=80',sizes:['XS','S','M','L'],isNew:true,desc:'Dorado metálico mini con broche en el hombro'},
+  {id:9,name:'Lila Estelar',category:'fiesta',img:'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=600&q=80',sizes:['S','M','L'],isNew:false,desc:'Morado lavanda brillante con drapeado al hombro'},
+];
+let cart=[];let selSizes={};
+function catLabel(c){return{fiesta:'Fiesta',formal:'Formal',boda:'Boda / XV',coctel:'Cóctel'}[c]||c}
+function renderCatalog(filter='todos'){
+  const grid=document.getElementById('catalogGrid');grid.innerHTML='';
+  const list=filter==='todos'?dresses:dresses.filter(d=>d.category===filter);
+  list.forEach(d=>{
+    const inCart=cart.find(c=>c.dressId===d.id);
+    const selSz=selSizes[d.id]||null;
+    const szHtml=d.sizes.map(s=>`<span class="sz ${selSz===s?'selected':''}" onclick="selSize(${d.id},'${s}',this)">${s}</span>`).join('');
+    const card=document.createElement('div');card.className='dress-card';
+    card.innerHTML=`${d.isNew?'<span class="badge-new">Nuevo</span>':''}
+      <img class="dress-img" src="${d.img}" alt="${d.name}" loading="lazy" onerror="this.style.display='none'">
+      <div class="dress-info">
+        <p class="dress-cat">${catLabel(d.category)}</p>
+        <h3 class="dress-name">${d.name}</h3>
+        <p class="dress-desc">${d.desc}</p>
+        <div style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem">Tallas</div>
+        <div class="size-chips" id="sizes-${d.id}">${szHtml}</div>
+        <button class="add-btn ${inCart?'added':''}" id="addBtn-${d.id}" onclick="addToCart(${d.id})">${inCart?'✓ Agregado':'+ Agregar'}</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+function selSize(id,size,el){selSizes[id]=size;document.querySelectorAll(`#sizes-${id} .sz`).forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+function addToCart(id){
+  const d=dresses.find(x=>x.id===id);const sz=selSizes[id];
+  if(!sz){alert('Selecciona una talla primero.');return}
+  if(cart.find(c=>c.dressId===id)){cart=cart.filter(c=>c.dressId!==id);const b=document.getElementById(`addBtn-${id}`);if(b){b.textContent='+ Agregar';b.classList.remove('added')}}
+  else{cart.push({dressId:id,size:sz,name:d.name,img:d.img});const b=document.getElementById(`addBtn-${id}`);if(b){b.textContent='✓ Agregado';b.classList.add('added')}}
+  updateCart();
+}
+function updateCart(){
+  const n=cart.length;const ce=document.getElementById('cartCount');
+  ce.textContent=n;ce.style.display=n>0?'flex':'none';
+  const ci=document.getElementById('cartItems');const cf=document.getElementById('cartFooter');
+  if(n===0){ci.innerHTML='<p class="cart-empty">Aún no has seleccionado ningún vestido.</p>';cf.style.display='none'}
+  else{ci.innerHTML=cart.map(c=>`<div class="cart-item"><img class="cart-item-thumb" src="${c.img}" onerror="this.style.background='#f0f0f0'"><div class="cart-item-info"><p class="cart-item-name">${c.name}</p><p class="cart-item-size">Talla: ${c.size}</p></div><button class="cart-remove" onclick="removeItem(${c.dressId})">✕</button></div>`).join('');cf.style.display='flex';cf.style.flexDirection='column';cf.style.gap='0.8rem'}
+}
+function removeItem(id){cart=cart.filter(c=>c.dressId!==id);const b=document.getElementById(`addBtn-${id}`);if(b){b.textContent='+ Agregar';b.classList.remove('added')}updateCart()}
+function sendToWhatsApp(){
+  const name=document.getElementById('clientName').value.trim();
+  const addr=document.getElementById('clientAddress').value.trim();
+  if(!name){alert('Por favor ingresa tu nombre.');return}
+  let msg=`¡Hola Evarist! 👗\n\n*Nombre:* ${name}\n`;
+  if(addr)msg+=`*Dirección:* ${addr}\n`;
+  msg+=`\n*Selección:*\n`;
+  cart.forEach((c,i)=>{msg+=`${i+1}. ${c.name} — Talla ${c.size}\n`});
+  msg+=`\n¡Gracias! 🌸`;
+  window.open(`https://wa.me/523318742975?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function findSize(){
+  const b=parseFloat(document.getElementById('busto').value);
+  const c=parseFloat(document.getElementById('cintura').value);
+  const r=document.getElementById('sizeResult');
+  if(isNaN(b)&&isNaN(c)){r.style.display='block';r.innerHTML='Ingresa al menos una medida.';return}
+  const bv=isNaN(b)?999:b;const cv=isNaN(c)?999:c;
+  let sz='';
+  if(bv<=84||cv<=64)sz='XS';else if(bv<=88||cv<=68)sz='S';else if(bv<=92||cv<=72)sz='M';
+  else if(bv<=96||cv<=76)sz='L';else if(bv<=100||cv<=80)sz='XL';else sz='XXL';
+  const wa=encodeURIComponent(`Hola Evarist! Mi talla estimada es ${sz}. ¿Pueden confirmar?`);
+  r.style.display='block';r.innerHTML=`Tu talla es <strong>${sz}</strong><br><a href="https://wa.me/523318742975?text=${wa}" target="_blank" class="wa-sz" style="margin-top:0.6rem;font-size:0.72rem">Confirmar por WhatsApp →</a>`;
+}
+document.querySelectorAll('.fbtn').forEach(b=>{
+  b.addEventListener('click',()=>{document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderCatalog(b.dataset.cat)})
+});
+document.getElementById('openCart').addEventListener('click',()=>document.getElementById('cartOverlay').classList.add('open'));
+document.getElementById('closeCart').addEventListener('click',()=>document.getElementById('cartOverlay').classList.remove('open'));
+document.getElementById('cartOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('cartOverlay'))document.getElementById('cartOverlay').classList.remove('open')});
+renderCatalog();
+</script>
+</body>
+</html>
